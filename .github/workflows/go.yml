@@ -41,4 +41,4 @@ jobs:
       with:
         context: .
         push: true
-        tags: pawel0987/smtp-http-forwarder:latest
+        tags: pawel20987/smtp-http-forwarder:latest
