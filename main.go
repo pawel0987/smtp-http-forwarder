@@ -14,7 +14,7 @@ import (
 var smtp_username = os.Getenv("SMTP_USERNAME")
 var smtp_password = os.Getenv("SMTP_PASSWORD")
 
-tyle HttpEndpoint struct {}
+type HttpEndpoint struct {}
 
 var http_endpoints = []HttpEndpoint
 
@@ -78,11 +78,11 @@ func main() {
 	    http_endpoints = append(http_endpoints, HttpEndpoint{
 		email: entry_pair[0],
 	        endpoint: entry_pair[1]
-        })
+            })
+        }
     }
-}
 
-log.Println("HTTP Endpoints: ", http_endpoints)
+    log.Println("HTTP Endpoints: ", http_endpoints)
 	be := &Backend{}
 
 	s := smtp.NewServer(be)
