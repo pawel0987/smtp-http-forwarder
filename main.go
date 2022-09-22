@@ -1,13 +1,14 @@
 package main
 
 import (
-	"errors"
-	"io"
-	"io/ioutil"
-	"log"
-	"time"
+    "errors"
+    "io"
+    "io/ioutil"
+    "log"
+    "time"
+    "strings"
 
-	"github.com/emersion/go-smtp"
+    "github.com/emersion/go-smtp"
 )
 
 smtp_usermame = os.Getenv("SMTP_USERNAME")
@@ -16,7 +17,18 @@ if smtp_username == "" || smtp_password == "" {
   panic(errors.New("both SMTP_USERNAME and SMTP_PASSWORD must be set"))
 }
 
-
+http_endpoints = []
+for _, e := range os.Environ() {
+	pair := strings.SplitN(e, "=", 2)
+    if strings.HasPrefix(pair[0], "HTTP_ENDPOINT") {
+        enrty_pair = strings.SplitN(pair[1], " ", 2)
+	    http_endpoints.append({
+		    email: entry_pair[0],
+	        endpoint: entry_pair[1]
+	    })
+    }
+}
+log.Println("HTTP Endpoints: ", http_endpoints)
 
 // The Backend implements SMTP server methods.
 type Backend struct{}
@@ -37,7 +49,12 @@ func (s *Session) AuthPlain(username, password string) error {
 
 func (s *Session) Mail(from string, opts *smtp.MailOptions) error {
 	log.Println("Mail from:", from)
-  // TODO
+    for _, http_endpoint := range http_endpoints {
+        if http_endpoint.email == from {
+            // send request to http_endpoint.endpoint
+            break
+        }
+    }
 	return nil
 }
 
