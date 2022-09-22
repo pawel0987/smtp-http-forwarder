@@ -2,6 +2,7 @@ package main
 
 import (
     "errors"
+    "os"
     "io"
     "io/ioutil"
     "log"
@@ -16,7 +17,7 @@ var smtp_password = os.Getenv("SMTP_PASSWORD")
 
 type HttpEndpoint struct {}
 
-var http_endpoints = []HttpEndpoint
+var http_endpoints = []HttpEndpoint{}
 
 // The Backend implements SMTP server methods.
 type Backend struct{}
@@ -35,7 +36,7 @@ func (s *Session) AuthPlain(username, password string) error {
     return nil
 }
 
-func (s *Session) Mail(from string, opts *smtp.MailOptions) error {
+func (s *Session) Mail(from string, opts smtp.MailOptions) error {
     log.Println("Mail from:", from)
     for _, http_endpoint := range http_endpoints {
         if http_endpoint.email == from {
