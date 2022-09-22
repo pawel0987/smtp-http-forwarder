@@ -30,7 +30,7 @@ func (bkd *Backend) NewSession(_ *smtp.Conn) (smtp.Session, error) {
 }
 
 func (bkd *Backend) AnonymousLogin(state *smtp.ConnectionState) (smtp.Session ,error) {
-    return errors.New("Unauthorized")
+    return nil, errors.New("Unauthorized")
 }
 
 // A Session is returned after EHLO.
