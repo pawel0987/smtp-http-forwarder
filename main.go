@@ -33,7 +33,10 @@ func (bkd *Backend) AnonymousLogin(state *smtp.ConnectionState) (smtp.Session ,e
     return nil, errors.New("Unauthorized")
 }
 
-func (bkd *Backend) Login(state *smtp.ConnectionState) (smtp.Session ,error) {
+func (bkd *Backend) Login(state *smtp.ConnectionState, username string, password string) (smtp.Session ,error) {
+    if username != smtp_username || password != smtp_password {
+        return nil, errors.New("Invalid username or password")
+    }
     return &Session{}, nil
 }
 
