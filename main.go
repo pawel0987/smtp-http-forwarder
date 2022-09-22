@@ -15,7 +15,10 @@ import (
 var smtp_username = os.Getenv("SMTP_USERNAME")
 var smtp_password = os.Getenv("SMTP_PASSWORD")
 
-type HttpEndpoint struct {}
+type HttpEndpoint struct {
+    Email string
+    Endpoint string
+}
 
 var http_endpoints = []HttpEndpoint{}
 
@@ -39,7 +42,7 @@ func (s *Session) AuthPlain(username, password string) error {
 func (s *Session) Mail(from string, opts smtp.MailOptions) error {
     log.Println("Mail from:", from)
     for _, http_endpoint := range http_endpoints {
-        if http_endpoint.email == from {
+        if http_endpoint.Email == from {
             // send request to http_endpoint.endpoint
             break
         }
@@ -75,10 +78,10 @@ func main() {
     for _, e := range os.Environ() {
 	pair := strings.SplitN(e, "=", 2)
         if strings.HasPrefix(pair[0], "HTTP_ENDPOINT") {
-            enrty_pair = strings.SplitN(pair[1], " ", 2)
-	    http_endpoints = append(http_endpoints, HttpEndpoint{
-		email: entry_pair[0],
-	        endpoint: entry_pair[1],
+            entry_pair = strings.SplitN(pair[1], " ", 2)
+	        http_endpoints = append(http_endpoints, HttpEndpoint{
+		        Email: entry_pair[0],
+	            Endpoint: entry_pair[1],
             })
         }
     }
