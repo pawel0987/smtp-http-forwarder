@@ -13,22 +13,9 @@ import (
 
 var smtp_username = os.Getenv("SMTP_USERNAME")
 var smtp_password = os.Getenv("SMTP_PASSWORD")
-if smtp_username == "" || smtp_password == "" {
-  panic(errors.New("both SMTP_USERNAME and SMTP_PASSWORD must be set"))
-}
 
-var http_endpoints = []
-for _, e := range os.Environ() {
-	pair := strings.SplitN(e, "=", 2)
-    if strings.HasPrefix(pair[0], "HTTP_ENDPOINT") {
-        enrty_pair = strings.SplitN(pair[1], " ", 2)
-	    http_endpoints.append({
-		    email: entry_pair[0],
-	        endpoint: entry_pair[1]
-	    })
-    }
-}
-log.Println("HTTP Endpoints: ", http_endpoints)
+
+var http_endpoints = []interface{}
 
 // The Backend implements SMTP server methods.
 type Backend struct{}
@@ -79,6 +66,32 @@ func (s *Session) Logout() error {
 }
 
 func main() {
+    if smtp_username == "" || smtp_password == "" {
+        panic(errors.New("both SMTP_USERNAME and SMTP_PASSWORD must be set"))
+    }
+	
+    for _, e := range os.Environ() {
+
+	pair := strings.SplitN(e, "=", 2)
+
+    if strings.HasPrefix(pair[0], "HTTP_ENDPOINT") {
+
+        enrty_pair = strings.SplitN(pair[1], " ", 2)
+
+	    http_endpoints = append(http_endpoints, {
+
+		    email: entry_pair[0],
+
+	        endpoint: entry_pair[1]
+
+	    })
+
+    }
+
+}
+
+log.Println("HTTP Endpoints: ", http_endpoints)
+	
 	be := &Backend{}
 
 	s := smtp.NewServer(be)
