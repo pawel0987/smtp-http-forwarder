@@ -77,25 +77,25 @@ func main() {
             enrty_pair = strings.SplitN(pair[1], " ", 2)
 	    http_endpoints = append(http_endpoints, HttpEndpoint{
 		email: entry_pair[0],
-	        endpoint: entry_pair[1]
+	        endpoint: entry_pair[1],
             })
         }
     }
-
     log.Println("HTTP Endpoints: ", http_endpoints)
-	be := &Backend{}
 
-	s := smtp.NewServer(be)
-	s.Addr = ":25"
-	s.Domain = "localhost"
-	s.ReadTimeout = 10 * time.Second
-	s.WriteTimeout = 10 * time.Second
-	s.MaxMessageBytes = 1024 * 1024
-	s.MaxRecipients = 50
-	s.AllowInsecureAuth = true
+    be := &Backend{}
 
-	log.Println("Starting server at", s.Addr)
-	if err := s.ListenAndServe(); err != nil {
-		log.Fatal(err)
-	}
+    s := smtp.NewServer(be)
+    s.Addr = ":25"
+    s.Domain = "localhost"
+    s.ReadTimeout = 10 * time.Second
+    s.WriteTimeout = 10 * time.Second
+    s.MaxMessageBytes = 1024 * 1024
+    s.MaxRecipients = 50
+    s.AllowInsecureAuth = true
+
+    log.Println("Starting server at", s.Addr)
+    if err := s.ListenAndServe(); err != nil {
+        log.Fatal(err)
+    }
 }
