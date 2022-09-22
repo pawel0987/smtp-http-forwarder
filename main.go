@@ -29,6 +29,10 @@ func (bkd *Backend) NewSession(_ *smtp.Conn) (smtp.Session, error) {
     return &Session{}, nil
 }
 
+func (bkd *Backend) AnonymousLogin() error {
+    return errors.New("Unauthorized")
+}
+
 // A Session is returned after EHLO.
 type Session struct{}
 
@@ -78,7 +82,7 @@ func main() {
     for _, e := range os.Environ() {
 	pair := strings.SplitN(e, "=", 2)
         if strings.HasPrefix(pair[0], "HTTP_ENDPOINT") {
-            entry_pair = strings.SplitN(pair[1], " ", 2)
+            entry_pair := strings.SplitN(pair[1], " ", 2)
 	        http_endpoints = append(http_endpoints, HttpEndpoint{
 		        Email: entry_pair[0],
 	            Endpoint: entry_pair[1],
