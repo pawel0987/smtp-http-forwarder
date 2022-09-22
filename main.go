@@ -29,7 +29,7 @@ func (bkd *Backend) NewSession(_ *smtp.Conn) (smtp.Session, error) {
     return &Session{}, nil
 }
 
-func (bkd *Backend) AnonymousLogin() error {
+func (bkd *Backend) AnonymousLogin(state *smtp.ConnectionState) (smtp.Session ,error) {
     return errors.New("Unauthorized")
 }
 
