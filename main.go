@@ -11,13 +11,13 @@ import (
     "github.com/emersion/go-smtp"
 )
 
-smtp_usermame = os.Getenv("SMTP_USERNAME")
-smtp_password = os.Getenv("SMTP_PASSWORD")
+var smtp_usermame = os.Getenv("SMTP_USERNAME")
+var smtp_password = os.Getenv("SMTP_PASSWORD")
 if smtp_username == "" || smtp_password == "" {
   panic(errors.New("both SMTP_USERNAME and SMTP_PASSWORD must be set"))
 }
 
-http_endpoints = []
+var http_endpoints = []
 for _, e := range os.Environ() {
 	pair := strings.SplitN(e, "=", 2)
     if strings.HasPrefix(pair[0], "HTTP_ENDPOINT") {
