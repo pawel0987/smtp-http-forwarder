@@ -25,15 +25,15 @@ var http_endpoints = []HttpEndpoint{}
 // The Backend implements SMTP server methods.
 type Backend struct{}
 
-func (bkd *Backend) AnonymousLogin(state *smtp.ConnectionState) (smtp.Session ,error) {
+func (bkd *Backend) AnonymousLogin(state *smtp.ConnectionState) (smtp.Session, error) {
     log.Println("Trying without auth...")
     return nil, smtp.ErrAuthRequired
 }
 
-func (bkd *Backend) Login(state *smtp.ConnectionState, username string, password string) (smtp.Session ,error) {
+func (bkd *Backend) Login(state *smtp.ConnectionState, username string, password string) (smtp.Session, error) {
     log.Println("Trying with auth...")
     if username != smtp_username || password != smtp_password {
-        log.Println("Invalid credentials"
+        log.Println("Invalid credentials")
         return nil, errors.New("Invalid username or password")
     }
     return &Session{}, nil
