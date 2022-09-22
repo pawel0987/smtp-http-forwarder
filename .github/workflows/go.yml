@@ -19,7 +19,7 @@ jobs:
         go-version: 1.18
         
     - name: Fetch Dependencies
-      run: go mod init "pawel0987/smtp-http-forwarder"; cat go.mod
+      run: go mod init "pawel0987/smtp-http-forwarder"; go get "github.com/emersion/go-smtp"; cat go.mod
 
     - name: Build
       run: go build
