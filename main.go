@@ -11,7 +11,7 @@ import (
     "github.com/emersion/go-smtp"
 )
 
-var smtp_usermame = os.Getenv("SMTP_USERNAME")
+var smtp_username = os.Getenv("SMTP_USERNAME")
 var smtp_password = os.Getenv("SMTP_PASSWORD")
 if smtp_username == "" || smtp_password == "" {
   panic(errors.New("both SMTP_USERNAME and SMTP_PASSWORD must be set"))
