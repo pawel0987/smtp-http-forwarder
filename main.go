@@ -50,6 +50,7 @@ func (s *Session) Mail(from string, opts smtp.MailOptions) error {
     log.Println("Mail from:", from)
     for _, http_endpoint := range http_endpoints {
         if http_endpoint.Email == from {
+            http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
             _, err := http.Get(http_endpoint.Endpoint)
             if err != nil {
                log.Fatalln(err)
@@ -81,8 +82,6 @@ func (s *Session) Logout() error {
 }
 
 func main() {
-    http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
-
     if smtp_username == "" || smtp_password == "" {
         panic(errors.New("both SMTP_USERNAME and SMTP_PASSWORD must be set"))
     }
