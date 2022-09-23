@@ -9,6 +9,7 @@ import (
     "time"
     "strings"
     "net/http"
+    "crypto/tls"
 
     "github.com/emersion/go-smtp"
 )
@@ -80,6 +81,8 @@ func (s *Session) Logout() error {
 }
 
 func main() {
+    http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
+
     if smtp_username == "" || smtp_password == "" {
         panic(errors.New("both SMTP_USERNAME and SMTP_PASSWORD must be set"))
     }
