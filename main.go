@@ -30,8 +30,8 @@ type Backend struct{}
 
 func (bkd *Backend) AnonymousLogin(state *smtp.ConnectionState) (smtp.Session, error) {
     log.Println("Trying without auth...")
-    return &Session{}, nil
-    //return nil, smtp.ErrAuthRequired
+    //return &Session{}, nil
+    return nil, smtp.ErrAuthRequired
 }
 
 func (bkd *Backend) Login(state *smtp.ConnectionState, username string, password string) (smtp.Session, error) {
@@ -50,10 +50,14 @@ func (s *Session) Mail(from string, opts smtp.MailOptions) error {
     log.Println("Mail from:", from)
     for _, http_endpoint := range http_endpoints {
         if http_endpoint.Email == from {
-            http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
-            _, err := http.Get(http_endpoint.Endpoint)
+            transCfg := &http.Transport{
+                TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+            }
+            client := &http.Client{Transport: transCfg}
+            log.Println("Found matching http endpoint. Sending request...")
+            _, err := client.Get(http_endpoint.Endpoint)
             if err != nil {
-               log.Fatalln(err)
+               log.Println(err)
             }
             break
         }
@@ -67,11 +71,11 @@ func (s *Session) Rcpt(to string) error {
 }
 
 func (s *Session) Data(r io.Reader) error {
-    if b, err := ioutil.ReadAll(r); err != nil {
-        return err
-    } else {
-        log.Println("Data:", string(b))
-    }
+    //if b, err := ioutil.ReadAll(r); err != nil {
+    //    return err
+    //} else {
+    //    log.Println("Data:", string(b))
+    //}
     return nil
 }
 
