@@ -102,9 +102,16 @@ func main() {
     }
     log.Println("HTTP Endpoints: ", http_endpoints)
 
+    log.Println("Loading certificate...")
+    cert, err := tls.LoadX509KeyPair("crt.pem", "key.pem")
+    if err != nil {
+        log.Fatal(err)
+    }
+
     be := &Backend{}
 
     s := smtp.NewServer(be)
+    s.TLSConfig := &tls.Config{Certificates: []tls.Certificate{cert}}                           
     s.Addr = ":25"
     s.EnableREQUIRETLS = true
     s.Domain = server_domain
