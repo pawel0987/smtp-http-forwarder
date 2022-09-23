@@ -106,15 +106,16 @@ func main() {
 
     s := smtp.NewServer(be)
     s.Addr = ":25"
+    s.EnableREQUIRETLS = true
     s.Domain = server_domain
     s.ReadTimeout = 120 * time.Second
     s.WriteTimeout = 120 * time.Second
     s.MaxMessageBytes = 1024 * 1024
     s.MaxRecipients = 50
-    s.AllowInsecureAuth = true
+    s.AllowInsecureAuth = false
 
     log.Println("Starting server at", s.Addr)
-    if err := s.ListenAndServe(); err != nil {
+    if err := s.ListenAndServeTLS(); err != nil {
         log.Fatal(err)
     }
 }
