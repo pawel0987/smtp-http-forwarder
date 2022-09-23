@@ -15,7 +15,7 @@ import (
 
 var smtp_username = os.Getenv("SMTP_USERNAME")
 var smtp_password = os.Getenv("SMTP_PASSWORD")
-var server_domain = os.GetEnv("SERVER_DOMAIN")
+var server_domain = os.Getenv("SERVER_DOMAIN")
 
 type HttpEndpoint struct {
     Email string
