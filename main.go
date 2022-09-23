@@ -8,6 +8,7 @@ import (
     "log"
     "time"
     "strings"
+    "net/http"
 
     "github.com/emersion/go-smtp"
 )
