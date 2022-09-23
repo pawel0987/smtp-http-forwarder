@@ -111,7 +111,7 @@ func main() {
     be := &Backend{}
 
     s := smtp.NewServer(be)
-    s.TLSConfig := &tls.Config{Certificates: []tls.Certificate{cert}}                           
+    s.TLSConfig = &tls.Config{Certificates: []tls.Certificate{cert}}                           
     s.Addr = ":25"
     s.EnableREQUIRETLS = true
     s.Domain = server_domain
