@@ -15,6 +15,7 @@ import (
 
 var smtp_username = os.Getenv("SMTP_USERNAME")
 var smtp_password = os.Getenv("SMTP_PASSWORD")
+var server_domain = os.GetEnv("SERVER_DOMAIN")
 
 type HttpEndpoint struct {
     Email string
@@ -99,9 +100,9 @@ func main() {
 
     s := smtp.NewServer(be)
     s.Addr = ":25"
-    s.Domain = "smtp-http-forwarder"
-    s.ReadTimeout = 10 * time.Second
-    s.WriteTimeout = 10 * time.Second
+    s.Domain = server_domain
+    s.ReadTimeout = 120 * time.Second
+    s.WriteTimeout = 120 * time.Second
     s.MaxMessageBytes = 1024 * 1024
     s.MaxRecipients = 50
     s.AllowInsecureAuth = true
