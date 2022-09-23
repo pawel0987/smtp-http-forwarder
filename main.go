@@ -27,7 +27,8 @@ type Backend struct{}
 
 func (bkd *Backend) AnonymousLogin(state *smtp.ConnectionState) (smtp.Session, error) {
     log.Println("Trying without auth...")
-    return nil, smtp.ErrAuthRequired
+    return &Session{}, nil
+    //return nil, smtp.ErrAuthRequired
 }
 
 func (bkd *Backend) Login(state *smtp.ConnectionState, username string, password string) (smtp.Session, error) {
@@ -46,7 +47,10 @@ func (s *Session) Mail(from string, opts smtp.MailOptions) error {
     log.Println("Mail from:", from)
     for _, http_endpoint := range http_endpoints {
         if http_endpoint.Email == from {
-            // send request to http_endpoint.endpoint
+            _, err := http.Get(http_endpoint.Endpoint)
+            if err != nil {
+               log.Fatalln(err)
+            }
             break
         }
     }
@@ -94,7 +98,7 @@ func main() {
 
     s := smtp.NewServer(be)
     s.Addr = ":25"
-    s.Domain = "localhost"
+    s.Domain = "smtp-http-forwarder"
     s.ReadTimeout = 10 * time.Second
     s.WriteTimeout = 10 * time.Second
     s.MaxMessageBytes = 1024 * 1024
