@@ -66,16 +66,10 @@ func (s *Session) Mail(from string, opts smtp.MailOptions) error {
 }
 
 func (s *Session) Rcpt(to string) error {
-    log.Println("Rcpt to:", to)
     return nil
 }
 
 func (s *Session) Data(r io.Reader) error {
-    //if b, err := ioutil.ReadAll(r); err != nil {
-    //    return err
-    //} else {
-    //    log.Println("Data:", string(b))
-    //}
     return nil
 }
 
