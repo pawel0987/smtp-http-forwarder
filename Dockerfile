@@ -12,5 +12,5 @@ RUN apk --update add openssl
 RUN openssl req -x509 -nodes -days 3650 -subj "/C=CA/ST=QC/O=Company Inc/CN=example.com" -newkey rsa:2048 -keyout key.pem -out crt.pem
 
 FROM alpine3.16
-COPY --from=0 /build/app
+COPY --from=0 /build/app .
 CMD ["./app"]
